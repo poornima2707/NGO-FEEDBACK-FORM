@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGO Feedback Form with Emojis</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e8f5e9; /* Light green background */
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #ffffff; /* White background for the form */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #388e3c; /* Dark green */
+            font-size: 30px;
+            margin-bottom: 20px;
+            font-family: 'Georgia', serif; /* Keep the same font as in your original */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-size: 16px;
+            color: #4a4a4a; /* Darker text */
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border-radius: 10px;
+            border: 1px solid #c8e6c9; /* Light green border */
+            font-size: 16px;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #388e3c; /* Dark green border on focus */
+            box-shadow: 0 0 5px rgba(56, 142, 60, 0.5);
+            outline: none;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #388e3c; /* Dark green button */
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #2e7d32; /* Darker green on hover */
+            transform: scale(1.05);
+        }
+
+        /* Star rating styling */
+        .star-rating {
+            direction: rtl;
+            display: inline-flex;
+            margin-top: 10px;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star {
+            font-size: 35px;
+            color: lightgray;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .star:hover,
+        .star:hover ~ .star {
+            color: gold;
+        }
+
+        .star-rating input:checked ~ .star {
+            color: gold;
+        }
+
+        /* Emoji rating */
+        .emoji-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+
+        .emoji {
+            font-size: 35px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .emoji:hover {
+            transform: scale(1.2);
+        }
+
+        .emoji-label {
+            display: block;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* Loader styling */
+        #loader {
+            display: none;
+            font-size: 16px;
+            color: #555;
+            margin-top: 10px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        /* Responsive styling */
+        @media (max-width: 600px) {
+            body {
+                font-size: 16px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Feedback Form</h2>
+        <form method="POST" name="google-sheet" autocomplete="off">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" name="name" required autocomplete="off">
+
+            <label>Your Rating for the Service:</label>
+            <div class="star-rating">
+                <input type="radio" id="star5" name="service_rating" value="5" required>
+                <label for="star5" class="star">&#9733;</label>
+                <input type="radio" id="star4" name="service_rating" value="4" required>
+                <label for="star4" class="star">&#9733;</label>
+                <input type="radio" id="star3" name="service_rating" value="3" required>
+                <label for="star3" class="star">&#9733;</label>
+                <input type="radio" id="star2" name="service_rating" value="2" required>
+                <label for="star2" class="star">&#9733;</label>
+                <input type="radio" id="star1" name="service_rating" value="1" required>
+                <label for="star1" class="star">&#9733;</label>
+            </div>
+
+            <label>Your Rating for the Product:</label>
+            <div class="emoji-container">
+                <input type="radio" id="excellent" name="product_rating" value="Excellent" class="emoji-radio" required>
+                <label for="excellent" class="emoji">😊<span class="emoji-label">Excellent</span></label>
+
+                <input type="radio" id="good" name="product_rating" value="Good" class="emoji-radio" required>
+                <label for="good" class="emoji">🙂<span class="emoji-label">Good</span></label>
+
+                <input type="radio" id="bad" name="product_rating" value="Bad" class="emoji-radio" required>
+                <label for="bad" class="emoji">😕<span class="emoji-label">Bad</span></label>
+
+                <input type="radio" id="terrible" name="product_rating" value="Terrible" class="emoji-radio" required>
+                <label for="terrible" class="emoji">😡<span class="emoji-label">Terrible</span></label>
+            </div>
+
+            <label for="source">Where did you hear about us?</label>
+            <select id="source" name="source" required>
+                <option value="social_media">Social Media</option>
+                <option value="friend_family">Friend/Family</option>
+                <option value="website">Website</option>
+                <option value="advertisement">Advertisement</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="suggestions">Suggestions (if any):</label>
+            <textarea id="suggestions" name="suggestions" rows="4" placeholder="Enter your suggestions or feedback here..." autocomplete="off"></textarea>
+
+            <div id="loader">Submitting your feedback...</div> <!-- Loader near the button -->
+
+            <button type="submit" name="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbymdVVG2oLl-qMBBJjEuwxxa9-DFygfoNq0BLHhWvKB-qEu48sQnsgY4b3IC7qVLEN2/exec';
+        const form = document.forms['google-sheet'];
+        const loader = document.getElementById('loader');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            loader.style.display = 'block'; // Show loader near the submit button when form is being submitted
+
+            fetch(scriptURL, {
+                method: 'POST',
+                body: new FormData(form)
+            })
+            .then(response => {
+                loader.style.display = 'none'; // Hide loader after submission
+                if (response.ok) {
+                    window.location.href = 'success.html'; 
+                } else {
+                    throw new Error('Network response was not ok.');
+                }
+            })
+            .catch(error => {
+                loader.style.display = 'none'; // Hide loader on error
+                console.error('Error!', error.message);
+            });
+        });
+    </script>
+</body>
+</html>
